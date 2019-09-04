@@ -21,7 +21,8 @@ namespace OpenGL {
 		//OPENGL BEGIN
 		HDC hDC; // Private GDI Device Context (glut.h)
 		HGLRC hRC; // Get handle to panel on form and call initialization function (glut.h)
-		//OPENGL END
+		//OPENGL END			 
+		
 		MyForm(void)
 		{
 			InitializeComponent();
@@ -95,17 +96,17 @@ namespace OpenGL {
 		glLoadIdentity();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glPushMatrix();
+		/*glPushMatrix();
 		glBegin(GL_TRIANGLES);
 		glColor3f(1.0f, 0.0f, 0.0f);   glVertex2f(0.0f, 1.0f);
 		glColor3f(0.0f, 1.0f, 0.0f);   glVertex2f(0.87f, -0.5f);
 		glColor3f(0.0f, 0.0f, 1.0f);   glVertex2f(-0.87f, -0.5f);
 		glEnd();
-		glPopMatrix();
+		glPopMatrix();*/
 
 		SwapBuffers(hDC);
 	}
-			   		 	  	  	   	
+
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -117,7 +118,11 @@ namespace OpenGL {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Panel^  panel1;
+
+	private:
+		System::Windows::Forms::Panel^  panel1;
+		System::Windows::Forms::Button^  buttonRender;
+		System::Windows::Forms::Button^  buttonClose;
 	protected:
 
 	private:
@@ -134,6 +139,8 @@ namespace OpenGL {
 		void InitializeComponent(void)
 		{
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->buttonRender = (gcnew System::Windows::Forms::Button());
+			this->buttonClose = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// panel1
@@ -144,11 +151,33 @@ namespace OpenGL {
 			this->panel1->TabIndex = 0;
 			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::panel1_Paint);
 			// 
+			// buttonRender
+			// 
+			this->buttonRender->Location = System::Drawing::Point(25, 245);
+			this->buttonRender->Name = L"buttonRender";
+			this->buttonRender->Size = System::Drawing::Size(75, 23);
+			this->buttonRender->TabIndex = 1;
+			this->buttonRender->Text = L"Render";
+			this->buttonRender->UseVisualStyleBackColor = true;
+			this->buttonRender->Click += gcnew System::EventHandler(this, &MyForm::buttonRender_Click);
+			// 
+			// buttonClose
+			// 
+			this->buttonClose->Location = System::Drawing::Point(179, 245);
+			this->buttonClose->Name = L"buttonClose";
+			this->buttonClose->Size = System::Drawing::Size(75, 23);
+			this->buttonClose->TabIndex = 2;
+			this->buttonClose->Text = L"Close";
+			this->buttonClose->UseVisualStyleBackColor = true;
+			this->buttonClose->Click += gcnew System::EventHandler(this, &MyForm::buttonClose_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 262);
+			this->ClientSize = System::Drawing::Size(284, 280);
+			this->Controls->Add(this->buttonClose);
+			this->Controls->Add(this->buttonRender);
 			this->Controls->Add(this->panel1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
@@ -172,5 +201,25 @@ namespace OpenGL {
 		Render();
 	}
 
-	};
+	private: System::Void buttonRender_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		glLoadIdentity();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glPushMatrix();
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 0.0f, 0.0f);   glVertex2f(0.0f, 1.0f);
+		glColor3f(0.0f, 1.0f, 0.0f);   glVertex2f(0.87f, -0.5f);
+		glColor3f(0.0f, 0.0f, 1.0f);   glVertex2f(-0.87f, -0.5f);
+		glEnd();
+		glPopMatrix();
+
+		SwapBuffers(hDC);
+	}
+	
+	private: System::Void buttonClose_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		this->Close();
+	}
+};
 }
